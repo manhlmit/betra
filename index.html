@@ -1,78 +1,244 @@
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="vi">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yêu Bảo bối</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Montserrat:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <style type="text/css">
-        @font-face {
-            font-family: digit;
-            src: url('digital-7_mono.ttf') format("truetype");
+        body {
+            background-color: #0d0f12;
+            color: #d8d8d8;
+            font-family: 'Cormorant Garamond', serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(166, 73, 90, 0.08) 0%, rgba(13, 15, 18, 0) 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: breathe 8s infinite alternate ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeIn 2.5s forwards ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .heart-svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 25px;
+            fill: none;
+            stroke: #a6495a;
+            stroke-width: 1;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawHeart 3s forwards ease-in-out, pulseStroke 4s infinite alternate ease-in-out 3s;
+        }
+
+        @keyframes drawHeart {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes pulseStroke {
+            0% {
+                filter: drop-shadow(0 0 2px rgba(166, 73, 90, 0.2));
+                stroke-width: 1;
+            }
+
+            100% {
+                filter: drop-shadow(0 0 10px rgba(166, 73, 90, 0.6));
+                stroke-width: 1.2;
+            }
+        }
+
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: #7a7a7c;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+
+        .time-val {
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #f0f0f0;
+            line-height: 1;
+            margin-bottom: 10px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .time-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: #a1a1a3;
+            text-transform: uppercase;
+        }
+
+        .message {
+            font-size: 2rem;
+            font-style: italic;
+            color: #e5e5e5;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+        }
+
+        .signature {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: #a6495a;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .timer {
+                gap: 15px;
+            }
+
+            .time-val {
+                font-size: 2.5rem;
+            }
+
+            .message {
+                font-size: 1.5rem;
+            }
         }
     </style>
-
-    <link href="loveletter/css/default.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="loveletter/js/jquery.js"></script>
-    <script type="text/javascript" src="loveletter/js/garden.js"></script>
-    <script type="text/javascript" src="loveletter/js/functions.js"></script>
-
 </head>
 
 <body>
+    <div class="ambient-glow"></div>
+    <div class="container">
+        <svg class="heart-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
 
-    <div id="mainDiv">
-        <div id="content">
+        <div class="title">Chúng ta đã yêu</div>
 
-            <div id="loveHeart">
-                <canvas id="garden"></canvas>
-                <div id="words">
-                    <div id="messages">
-                        Chúng ta đã yêu:
-                        <div id="elapseClock"></div>
-                    </div>
-                    <div id="loveu">
-                        Ngày mai vẫn yêu em<br />
-                        <div class="signature">- Lê Minh Mạnh</div>
-                    </div>
-                </div>
+        <div class="timer">
+            <div class="time-box">
+                <div class="time-val" id="days"
+                    style="color:#d8d8d8; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));">00</div>
+                <div class="time-label">Ngày</div>
+            </div>
+            <div class="time-box">
+                <div class="time-val" id="hours">00</div>
+                <div class="time-label">Giờ</div>
+            </div>
+            <div class="time-box">
+                <div class="time-val" id="minutes">00</div>
+                <div class="time-label">Phút</div>
+            </div>
+            <div class="time-box">
+                <div class="time-val" id="seconds">00</div>
+                <div class="time-label">Giây</div>
             </div>
         </div>
+
+        <div class="message">"Ngày mai vẫn yêu em"</div>
+        <div class="signature">— Lê Minh Mạnh —</div>
     </div>
 
-    <script type="text/javascript">
-        var offsetX = $("#loveHeart").width() / 2;
-        var offsetY = $("#loveHeart").height() / 2 - 55;
-        var together = new Date();
-        together.setFullYear(2026, 2, 12);
-        together.setHours(8); // changed from 08
-        together.setMinutes(30);
-        together.setSeconds(0);
-        together.setMilliseconds(0);
+    <script>
+        // Thời gian bắt đầu: 12/03/2026 08:30:00
+        const startDate = new Date(2026, 2, 12, 8, 30, 0);
 
-        if (!document.createElement('canvas').getContext) {
-            var msg = document.createElement("div");
-            msg.id = "errorMsg";
-            msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+";
-            document.body.appendChild(msg);
-            $("#copyright").css("position", "absolute");
-            $("#copyright").css("bottom", "10px");
-            document.execCommand("stop");
-        } else {
-            setTimeout(function () {
-                startHeartAnimation();
-            }, 100);
+        function updateTimer() {
+            const now = new Date();
+            let diff = Math.floor((now - startDate) / 1000);
 
-            timeElapse(together);
-            setInterval(function () {
-                timeElapse(together);
-            }, 100);
+            if (diff < 0) diff = 0; // Chưa tới ngày thì để 0
 
+            const days = Math.floor(diff / (24 * 3600));
+            diff %= (24 * 3600);
+            const hours = Math.floor(diff / 3600);
+            diff %= 3600;
+            const minutes = Math.floor(diff / 60);
+            const seconds = diff % 60;
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
         }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
     </script>
-
-
 </body>
 
 </html>
